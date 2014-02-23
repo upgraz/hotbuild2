@@ -214,9 +214,14 @@ var hotbuildsettings = (function () {
             
         });
 
+        self.klayout = ko.observable();
+
         self.ChangeLayout = function (value) {
-            self.keyboardLayout("Test");
+            //self.keyboardLayout("Test");
+            self.klayout({ 'row1': ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'] });
         }
+
+        
 
         self.keyboardkey = ko.observable();
         self.uberkey = ko.observable();
@@ -623,6 +628,24 @@ var hotbuildsettings = (function () {
         hotbuildsettings.viewmodel.filterunits(); // should really clone eh
         hotbuildsettings.viewmodel.Save();
         hotbuildsettings.viewmodel.updatehotbuildkeys();
+    };
+
+    ko.bindingHandlers.keyboard = {
+        //init loading of layout using ko
+        update: function (element, valueAccessor, allBindings) {
+            // First get the latest data that we're bound to
+            var value = valueAccessor();
+            // Next, whether or not the supplied model property is observable, get its current value
+            var layoutDefault = ko.utils.unwrapObservable(value);
+            debugger;
+            $keyboard.html('');
+            for (var i = 0; i < layoutDefault.row1.length; i++) {
+                var $key = $("<li/>");
+                $key.addClass('letter');
+                $key.html(layoutDefault.row1[i]);
+                $keyboard.append($key);
+            }
+        }
     };
 
     ko.bindingHandlers.colorhotbuildkeys = {
