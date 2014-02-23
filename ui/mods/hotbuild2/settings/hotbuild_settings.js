@@ -197,7 +197,14 @@ var hotbuildsettings = (function () {
         };
 
 
-        self.klayout = ko.observable({ 'row1': ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'] });
+        self.klayout = ko.observable({
+            //'row0': ['esc', 'F1', 'F2', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
+            //'row1': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+            'row2': ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+            'row3': ['capslock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'return'],
+            'row4': ['left-shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'right-shift'],
+            'row5': ['space']
+        });
 
         self.ChangeLayout = function (value) {
             //self.keyboardLayout("Test");
@@ -258,7 +265,7 @@ var hotbuildsettings = (function () {
         });
 
         self.disabledkeys = ko.computed(function () {
-            var diskeys = ['caps lock', 'shift', 'return'];
+            var diskeys = ['capslock', 'left-shift', 'right-shift', 'return'];
             if (model.camera_key_pan_style() === "WASD") {
                 diskeys = diskeys.concat(['w', 'a', 's', 'd']);
             }
@@ -661,23 +668,27 @@ var hotbuildsettings = (function () {
             var value = valueAccessor();
             // Next, whether or not the supplied model property is observable, get its current value
             var layoutDefault = ko.utils.unwrapObservable(value);
-            debugger;
+            //debugger;
             var $keyboard = $('#keyboard');
             $keyboard.html('');
-            //_.forIn(layoutDefault,)
-            for (var i = 0; i < layoutDefault.row1.length; i++) {
-                var $key = $("<li/>");
-                if (!isSpecial(layoutDefault.row1[i], $key)){
-                    if (isLetter(layoutDefault.row1[i])) {
-                        $key.addClass('letter');
-                    } else {
-                        $key.addClass('symbol');
+            for(var prop in layoutDefault){
+                for (var i = 0; i < layoutDefault[prop].length; i++) {
+                    var $key = $("<li/>");
+                    if (!isSpecial(layoutDefault[prop][i], $key)){
+                        if (isLetter(layoutDefault[prop][i])) {
+                            $key.addClass('letter');
+                        }else {
+                            $key.addClass('symbol');
+                        }
                     }
+                    $key.html(layoutDefault[prop][i]);
+                    //debugger;
+                    if (i === layoutDefault[prop].length - 1) {
+                        console.log("lalala" + layoutDefault[prop][i])
+                        $key.addClass('lastitem');
+                    }
+                    $keyboard.append($key);
                 }
-
-                
-                $key.html(layoutDefault.row1[i]);
-                $keyboard.append($key);
             }
             $("#keyboard li").bind("click dblclick", hotbuildsettings.viewmodel.keyboardclickhandler);
         }
