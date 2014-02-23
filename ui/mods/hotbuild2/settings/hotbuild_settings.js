@@ -196,6 +196,28 @@ var hotbuildsettings = (function () {
             }
         };
 
+        self.keyboardLayout = ko.observable("Default");
+        self.keyboardLayout.subscribe(function (value) {
+            console.log("Changing Keyboard Layout to " + value);
+
+            var layoutDefault = { 'row1': ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'] };
+
+            var $keyboard = $('#keyboard');
+
+            $keyboard.html('');
+            for (var i = 0; i < layoutDefault.row1.length; i++) {
+                var $key = $("<li/>");
+                $key.addClass('letter');
+                $key.html(layoutDefault.row1[i]);
+                $keyboard.append($key);
+            }
+            
+        });
+
+        self.ChangeLayout = function (value) {
+            self.keyboardLayout("Test");
+        }
+
         self.keyboardkey = ko.observable();
         self.uberkey = ko.observable();
         self.selectedkeyinfo = ko.observable();
@@ -568,6 +590,7 @@ var hotbuildsettings = (function () {
     model.addSetting_Button('Set Community Defaults', '(&#8592;&#8593;&#8594;&#8595;)', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultPrompt', 'Hotbuild2');
     model.addSetting_Button('Set Community Defaults', 'WASD', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultWASDPrompt', 'Hotbuild2');
     model.addSetting_Button('Import/Export', 'Import/Export', 'UI', 'hotbuildsettings.viewmodel.showImportExportDialog', 'Hotbuild2');
+    model.addSetting_Button('Keyboard Layout', 'Change', 'UI', 'hotbuildsettings.viewmodel.ChangeLayout', 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Show Key on BuildBar', 'hotbuild_show_key_on_buildbar', 'UI', ['ON', 'OFF'], 0, 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Show Key on SideBar', 'hotbuild_show_key_on_sidebar', 'UI', ['ON', 'OFF'], 0, 'Hotbuild2');
     model.addSetting_Text('Hotbuild Reset Time', 'hotbuild_reset_time', 'UI', 'Number', 2000, 'Hotbuild2');
