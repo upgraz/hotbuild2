@@ -196,29 +196,12 @@ var hotbuildsettings = (function () {
             }
         };
 
-        self.keyboardLayout = ko.observable("Default");
-        self.keyboardLayout.subscribe(function (value) {
-            console.log("Changing Keyboard Layout to " + value);
 
-            var layoutDefault = { 'row1': ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'] };
-
-            var $keyboard = $('#keyboard');
-
-            $keyboard.html('');
-            for (var i = 0; i < layoutDefault.row1.length; i++) {
-                var $key = $("<li/>");
-                $key.addClass('letter');
-                $key.html(layoutDefault.row1[i]);
-                $keyboard.append($key);
-            }
-            
-        });
-
-        self.klayout = ko.observable();
+        self.klayout = ko.observable({ 'row1': ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'] });
 
         self.ChangeLayout = function (value) {
             //self.keyboardLayout("Test");
-            self.klayout({ 'row1': ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'] });
+            self.klayout({ 'row1': ['tab', 'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'] });
         }
 
         
@@ -633,18 +616,70 @@ var hotbuildsettings = (function () {
     ko.bindingHandlers.keyboard = {
         //init loading of layout using ko
         update: function (element, valueAccessor, allBindings) {
+
+            var isLetter = function (input) {
+                var re = /[a-zA-Z]/;
+                if (re.test(input)){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+            var isSpecial = function (input, $key) {
+                switch (input) {
+                    case 'tab':
+                        $key.addClass('tab');
+                        return true;
+                        break;
+                    case 'capslock':
+                        $key.addClass('capslock');
+                        return true;
+                        break;
+                    case 'return':
+                        $key.addClass('return');
+                        return true;
+                        break;
+                    case 'left-shift':
+                        $key.addClass('left-shift');
+                        return true;
+                        break;
+                    case 'right-shift':
+                        $key.addClass('right-shift');
+                        return true;
+                        break;
+                    case 'space':
+                        $key.addClass('space');
+                        return true;
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
+            }
             // First get the latest data that we're bound to
             var value = valueAccessor();
             // Next, whether or not the supplied model property is observable, get its current value
             var layoutDefault = ko.utils.unwrapObservable(value);
             debugger;
+            var $keyboard = $('#keyboard');
             $keyboard.html('');
+            //_.forIn(layoutDefault,)
             for (var i = 0; i < layoutDefault.row1.length; i++) {
                 var $key = $("<li/>");
-                $key.addClass('letter');
+                if (!isSpecial(layoutDefault.row1[i], $key)){
+                    if (isLetter(layoutDefault.row1[i])) {
+                        $key.addClass('letter');
+                    } else {
+                        $key.addClass('symbol');
+                    }
+                }
+
+                
                 $key.html(layoutDefault.row1[i]);
                 $keyboard.append($key);
             }
+            $("#keyboard li").bind("click dblclick", hotbuildsettings.viewmodel.keyboardclickhandler);
         }
     };
 
