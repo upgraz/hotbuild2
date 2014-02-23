@@ -565,10 +565,13 @@ var hotbuildsettings = (function () {
         return newSettings;
     });
 
-    model.addSetting_Text('Hotbuild Reset Time', 'hotbuild_reset_time', 'UI', 'Number', 2000, 'Hotbuild2');
-    model.addSetting_DropDown('Hotbuild Reset Cycle when Shift isn\'t down', 'hotbuild_shift_key_recycle', 'UI', ['ON', 'OFF'], 1, 'Hotbuild2');
+    model.addSetting_Button('Set Community Defaults', '(&#8592;&#8593;&#8594;&#8595;)', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultPrompt', 'Hotbuild2');
+    model.addSetting_Button('Set Community Defaults', 'WASD', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultWASDPrompt', 'Hotbuild2');
+    model.addSetting_Button('Import/Export', 'Import/Export', 'UI', 'hotbuildsettings.viewmodel.showImportExportDialog', 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Show Key on BuildBar', 'hotbuild_show_key_on_buildbar', 'UI', ['ON', 'OFF'], 0, 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Show Key on SideBar', 'hotbuild_show_key_on_sidebar', 'UI', ['ON', 'OFF'], 0, 'Hotbuild2');
+    model.addSetting_Text('Hotbuild Reset Time', 'hotbuild_reset_time', 'UI', 'Number', 2000, 'Hotbuild2');
+    model.addSetting_DropDown('Hotbuild Reset Cycle when Shift isn\'t down', 'hotbuild_shift_key_recycle', 'UI', ['ON', 'OFF'], 1, 'Hotbuild2');
     model.registerFrameSetting('hotbuild_info_frame', 'Hotbuild Preview', true);
 
     ko.bindingHandlers.sortable.beforeMove = function (arg) {

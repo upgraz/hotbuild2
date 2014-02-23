@@ -2,13 +2,8 @@
     <div id="block">
         <div class="ui-icon ui-icon-comment"></div>
         <div id="comments" style="font-family:'DINPRO-LIGHT'">Please give comments/ideas on the forum</div>
-        <div id="communitydefaults">
-            <input type="button" value="Community Defaults (&#8592;&#8593;&#8594;&#8595;)" data-bind="click_sound: 'default', rollover_sound: 'default',click:$root.showCommunityDefaultPrompt" />
-            <input type="button" value="Community Defaults (WASD)"  data-bind="click_sound: 'default', rollover_sound: 'default',click:$root.showCommunityDefaultWASDPrompt" />
-        </div>
-        <div id="troubles" style="font-family:'DINPRO-LIGHT'">Issues? Please select a "Community Default" then "Save and Close"</div>
+        <div id="troubles" style="font-family:'DINPRO-LIGHT'">Issues? Please click a "Community Defaults" via UI Tab then "Save and Close"</div>
         <div class="ui-icon ui-icon-info"></div>
-
         <div id="keyboardcontainer">
             <ul id="keyboard" data-bind="colorhotbuildkeys: hotbuildkeys, coloruberkeys: uberkeys, colordisabledkeys: disabledkeys, activekey: keyboardkey, click_sound: 'default', rollover_sound: 'default'">
                 <li class="tab">tab</li>
@@ -63,10 +58,6 @@
                 <div id="legendlabel">Reserved</div>
             </ul>
 
-        </div>
-
-        <div id="imexporter">
-            <input type="button" value="Import - Export" type="submit" data-bind="click_sound:'default', rollover_sound:'default', click:$root.showImportExportDialog" />
         </div>
     </div>
 
