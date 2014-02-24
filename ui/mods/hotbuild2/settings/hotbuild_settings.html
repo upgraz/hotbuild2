@@ -102,20 +102,11 @@
     </script>
 
 
-
     <div id="comdefaultsDlg" data-bind="visible: showingDefaultPrompt">
-        <div><span>Are you sure you want to reset your keys to the community defaults ?</span></div>
+        <div><span>Are you sure you want to reset your keys to the community defaults (<span data-bind="text: model.hotbuild_cdefaults"></span>) ?</span></div>
         <div id="tutorialBtnGroup" style="margin-top: 10px">
             <button id="setComDefaults" type="submit" style="width: 45%">YES</button>
             <button id="ignoreComDefaults" type="submit" style="width: 35%; margin-left: 10px">NO THANKS</button>
-        </div>
-    </div>
-
-    <div id="comdefaultsWASDDlg" data-bind="visible: showingDefaultWASDPrompt">
-        <div><span>Are you sure you want to reset your keys to the community defaults (WASD) ?</span></div>
-        <div id="tutorialBtnGroup" style="margin-top: 10px">
-            <button id="setComDefaultsWASD" type="submit" style="width: 45%">YES</button>
-            <button id="ignoreComDefaultsWASD" type="submit" style="width: 35%; margin-left: 10px">NO THANKS</button>
         </div>
     </div>
 

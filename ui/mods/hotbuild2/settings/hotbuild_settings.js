@@ -196,7 +196,7 @@ var hotbuildsettings = (function () {
             }
         };
 
-
+        self.klayouts = ko.observableArray([]);
         self.klayout = ko.observable({
             //'row0': ['esc', 'F1', 'F2', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
             //'row1': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
@@ -206,9 +206,16 @@ var hotbuildsettings = (function () {
             'row5': ['space']
         });
 
-        self.ChangeLayout = function (value) {
-            //self.keyboardLayout("Test");
-            self.klayout({ 'row1': ['tab', 'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'] });
+        self.ChangeLayout = function () {
+            for (var i = 0; i < self.klayouts.length; i++) {
+                if (self.klayouts[i][0] === model.hotbuild_klayout()) {
+                    $.getJSON('coui://ui/mods/hotbuild2/layouts/' + self.klayouts[i][1], function (imported) {
+                        self.klayout(imported);
+                    });
+                    
+                    break;
+                }
+            }
         }
 
         
@@ -360,9 +367,8 @@ var hotbuildsettings = (function () {
             self.updatehotbuildkeys();
         };
 
+        self.cDefaultList = ko.observableArray([]);
         self.showingDefaultPrompt = ko.observable(false);
-        self.showingDefaultWASDPrompt = ko.observable(false);
-
         self.showCommunityDefaultPrompt = function () {
             self.showingDefaultPrompt(true);
             $("#comdefaultsDlg").dialog({
@@ -373,56 +379,20 @@ var hotbuildsettings = (function () {
                 complete: function (data, textStatus) { }
             });
             $("#setComDefaults").click(function () {
-                console.log("set Community Defaults");
-                //disable osk
-                //$("#keyboard li").unbind("click dblclick", self.keyboardclickhandler);
-                self.ComunityDefaults();
+                console.log("set Community Defaults " + model.hotbuild_cdefaults());
+                for (var i = 0; i < self.cDefaultList.length; i++) {
+                    if (self.cDefaultList[i][0] === model.hotbuild_cdefaults()) {
+                        self.importfromfile("/ui/mods/hotbuild2/defaults/" + self.cDefaultList[i][1])
+                        break;
+                    }
+                }
                 self.showingDefaultPrompt(false);
                 $("#comdefaultsDlg").dialog("close");
-                //enable osk
-                //$("#keyboard li").bind("click dblclick", self.keyboardclickhandler);
             });
             $("#ignoreComDefaults").click(function () {
                 self.showingDefaultPrompt(false);
                 $("#comdefaultsDlg").dialog("close");
             });
-        };
-
-        self.showCommunityDefaultWASDPrompt = function () {
-            self.showingDefaultWASDPrompt(true);
-            $("#comdefaultsWASDDlg").dialog({
-                dialogClass: "no-close",
-                draggable: false,
-                resizable: false,
-                modal: true,
-                complete: function (data, textStatus) { }
-            });
-            $("#setComDefaultsWASD").click(function () {
-                console.log("set Community Defaults WASD");
-                //disable osk
-                //$("#keyboard li").unbind("click dblclick", self.keyboardclickhandler);
-                self.ComunityDefaultsWASD();
-                self.showingDefaultWASDPrompt(false);
-                $("#comdefaultsWASDDlg").dialog("close");
-                //enable osk
-                //$("#keyboard li").bind("click dblclick", self.keyboardclickhandler);
-            });
-            $("#ignoreComDefaultsWASD").click(function () {
-                self.showingDefaultWASDPrompt(false);
-                $("#comdefaultsWASDDlg").dialog("close");
-            });
-        };
-
-        self.ComunityDefaults = function () {
-            self.importfromfile("/ui/mods/hotbuild2/defaults/ARROWS.json");
-            model.camera_key_pan_style('ARROW');
-            forgetFramePosition('hotbuild_info_frame');
-        };
-
-        self.ComunityDefaultsWASD = function () {
-            model.camera_key_pan_style('WASD');
-            forgetFramePosition('hotbuild_info_frame');
-            self.importfromfile("/ui/mods/hotbuild2/defaults/WASD.json");
         };
 
         self.export = function () {
@@ -432,6 +402,7 @@ var hotbuildsettings = (function () {
             self.Save();
             keyboardsettings.hotbuildglobalkey = self.cleanhotbuildglobalkey();
             keyboardsettings.hotbuildglobal = self.cleanhotbuildglobal();
+            keyboardsettings.camera_key_pan_style = model.camera_key_pan_style();
             $("#ieport").val(JSON.stringify(keyboardsettings));
         };
 
@@ -470,6 +441,8 @@ var hotbuildsettings = (function () {
                 }
                 self.hotbuildglobalkey(imported.hotbuildglobalkey);
                 self.hotbuildglobal(imported.hotbuildglobal);
+                model.camera_key_pan_style(imported.camera_key_pan_style);
+                forgetFramePosition('hotbuild_info_frame');
                 updateExistingSettings();
                 self.Save();
                 self.keyboardkey('');
@@ -513,6 +486,8 @@ var hotbuildsettings = (function () {
                 }
                 self.hotbuildglobalkey(imported.hotbuildglobalkey);
                 self.hotbuildglobal(imported.hotbuildglobal);
+                model.camera_key_pan_style(imported.camera_key_pan_style);
+                forgetFramePosition('hotbuild_info_frame');
                 updateExistingSettings();
                 self.Save();
                 self.keyboardkey('');
@@ -600,6 +575,7 @@ var hotbuildsettings = (function () {
         for (var i = 0; i < data.defaults.length; i++) {
             defaultdropdownlist.push(data.defaults[i][0]);
         }
+        hotbuildsettings.viewmodel.cDefaultList = data.defaults;
         model.hotbuild_cdefaults_options(defaultdropdownlist);
     });
     $.getJSON("coui://ui/mods/hotbuild2/layouts/keyboard_layouts.json", function (data) {
@@ -607,6 +583,7 @@ var hotbuildsettings = (function () {
         for (var i = 0; i < data.klayouts.length; i++) {
             defaultdropdownlist.push(data.klayouts[i][0]);
         }
+        hotbuildsettings.viewmodel.klayouts = data.klayouts;
         model.hotbuild_klayout_options(defaultdropdownlist);
     });
 
