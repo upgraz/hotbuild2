@@ -8,6 +8,7 @@
     initialSettingValue('hotbuild_show_key_on_buildbar','ON');
     initialSettingValue('hotbuild_show_key_on_sidebar', 'ON');
     initialSettingValue('hotbuild_shift_key_recycle', 'OFF');
+    initialSettingValue('hotbuild_cdefaults', 'DEFAULT');
     
     //keyboard tab keys under hotbuild title
     action_sets.hotbuild = {}; 

@@ -582,15 +582,33 @@ var hotbuildsettings = (function () {
         return newSettings;
     });
 
-    model.addSetting_Button('Set Community Defaults', '(&#8592;&#8593;&#8594;&#8595;)', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultPrompt', 'Hotbuild2');
-    model.addSetting_Button('Set Community Defaults', 'WASD', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultWASDPrompt', 'Hotbuild2');
+    model.addSetting_DropDown('Choose Community Defaults', 'hotbuild_cdefaults', 'UI', ["DEFAULT"], 0, 'Hotbuild2');
+    model.addSetting_Button('', 'Apply Defaults', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultPrompt', 'Hotbuild2');
+    //model.addSetting_Button('Set Community Defaults', '(&#8592;&#8593;&#8594;&#8595;)', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultPrompt', 'Hotbuild2');
+    //model.addSetting_Button('Set Community Defaults', 'WASD', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultWASDPrompt', 'Hotbuild2');
     model.addSetting_Button('Import/Export', 'Import/Export', 'UI', 'hotbuildsettings.viewmodel.showImportExportDialog', 'Hotbuild2');
-    model.addSetting_Button('Keyboard Layout', 'Change', 'UI', 'hotbuildsettings.viewmodel.ChangeLayout', 'Hotbuild2');
+    model.addSetting_DropDown('Choose Keyboard Layout', 'hotbuild_klayout', 'UI', ["DEFAULT"], 0, 'Hotbuild2');
+    model.addSetting_Button('', 'Change Layout', 'UI', 'hotbuildsettings.viewmodel.ChangeLayout', 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Show Key on BuildBar', 'hotbuild_show_key_on_buildbar', 'UI', ['ON', 'OFF'], 0, 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Show Key on SideBar', 'hotbuild_show_key_on_sidebar', 'UI', ['ON', 'OFF'], 0, 'Hotbuild2');
     model.addSetting_Text('Hotbuild Reset Time', 'hotbuild_reset_time', 'UI', 'Number', 2000, 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Reset Cycle when Shift isn\'t down', 'hotbuild_shift_key_recycle', 'UI', ['ON', 'OFF'], 1, 'Hotbuild2');
     model.registerFrameSetting('hotbuild_info_frame', 'Hotbuild Preview', true);
+    
+    $.getJSON("coui://ui/mods/hotbuild2/defaults/default_list.json", function (data) {
+        var defaultdropdownlist = [];
+        for (var i = 0; i < data.defaults.length; i++) {
+            defaultdropdownlist.push(data.defaults[i][0]);
+        }
+        model.hotbuild_cdefaults_options(defaultdropdownlist);
+    });
+    $.getJSON("coui://ui/mods/hotbuild2/layouts/keyboard_layouts.json", function (data) {
+        var defaultdropdownlist = [];
+        for (var i = 0; i < data.klayouts.length; i++) {
+            defaultdropdownlist.push(data.klayouts[i][0]);
+        }
+        model.hotbuild_klayout_options(defaultdropdownlist);
+    });
 
     ko.bindingHandlers.sortable.beforeMove = function (arg) {
         if (hotbuildsettings.viewmodel.selectedkeyinfo() !== undefined) {
