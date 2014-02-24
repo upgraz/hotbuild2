@@ -654,6 +654,10 @@ var hotbuildsettings = (function () {
                         $key.addClass('space');
                         return true;
                         break;
+                    case 'esc':
+                        $key.addClass('esc');
+                        return true;
+                        break;						
                     default:
                         return false;
                         break;
@@ -668,7 +672,7 @@ var hotbuildsettings = (function () {
             $keyboard.html('');
             for(var prop in layoutDefault){
                 for (var i = 0; i < layoutDefault[prop].length; i++) {
-                    var $key = $("<li/>");
+                    var $key = $("<span/>");
                     if (!isSpecial(layoutDefault[prop][i], $key)){
                         if (isLetter(layoutDefault[prop][i])) {
                             $key.addClass('letter');
@@ -685,7 +689,7 @@ var hotbuildsettings = (function () {
                     $keyboard.append($key);
                 }
             }
-            $("#keyboard li").bind("click dblclick", hotbuildsettings.viewmodel.keyboardclickhandler);
+            $("#keyboard span").bind("click dblclick", hotbuildsettings.viewmodel.keyboardclickhandler);
         }
     };
 
@@ -695,13 +699,13 @@ var hotbuildsettings = (function () {
             var value = valueAccessor();
             // Next, whether or not the supplied model property is observable, get its current value
             var valueUnwrapped = ko.utils.unwrapObservable(value);
-            $('#keyboard li').each(function (index) {
+            $('#keyboard span').each(function (index) {
                 if ($(this).hasClass('hbk')) {
                     $(this).removeClass('hbk');
                 }
             });
             for (var i = 0; i < valueUnwrapped.length; i++) {
-                $("#keyboard li").each(function (index) {
+                $("#keyboard span").each(function (index) {
                     if ($(this).text() === valueUnwrapped[i]) {
                         if (!$(this).hasClass('hbk')) {
                             $(this).toggleClass('hbk');
@@ -718,13 +722,13 @@ var hotbuildsettings = (function () {
             var value = valueAccessor();
             // Next, whether or not the supplied model property is observable, get its current value
             var valueUnwrapped = ko.utils.unwrapObservable(value);
-            $('#keyboard li').each(function (index) {
+            $('#keyboard span').each(function (index) {
                 if ($(this).hasClass('uber')) {
                     $(this).removeClass('uber');
                 }
             });
             for (var i = 0; i < valueUnwrapped.length; i++) {
-                $("#keyboard li").each(function (index) {
+                $("#keyboard span").each(function (index) {
                     if ($(this).text() === valueUnwrapped[i]) {
                         if (!$(this).hasClass('uber')) {
                             $(this).toggleClass('uber');
@@ -741,13 +745,13 @@ var hotbuildsettings = (function () {
             var value = valueAccessor();
             // Next, whether or not the supplied model property is observable, get its current value
             var valueUnwrapped = ko.utils.unwrapObservable(value);
-            $('#keyboard li').each(function (index) {
+            $('#keyboard span').each(function (index) {
                 if ($(this).hasClass('dis')) {
                     $(this).removeClass('dis');
                 }
             });
             for (var i = 0; i < valueUnwrapped.length; i++) {
-                $("#keyboard li").each(function (index) {
+                $("#keyboard span").each(function (index) {
                     if ($(this).text() === valueUnwrapped[i]) {
                         if (!$(this).hasClass('dis')) {
                             $(this).toggleClass('dis');
@@ -770,7 +774,7 @@ var hotbuildsettings = (function () {
                     $(this).removeClass('active');
                 }
             });
-            $("#keyboard li").each(function (index) {
+            $("#keyboard span").each(function (index) {
                 if ($(this).text() === valueUnwrapped) {
                     var $this = $(this);
                     if (!$this.hasClass('active')) {
