@@ -578,6 +578,7 @@ var hotbuildsettings = (function () {
         }
         hotbuildsettings.viewmodel.klayouts = data.klayouts;
         model.hotbuild_klayout_options(defaultdropdownlist);
+        hotbuildsettings.viewmodel.ChangeLayout();
     });
 
     ko.bindingHandlers.sortable.beforeMove = function (arg) {
