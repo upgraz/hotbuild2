@@ -657,7 +657,34 @@ var hotbuildsettings = (function () {
                     case 'esc':
                         $key.addClass('esc');
                         return true;
-                        break;						
+                        break;	
+                    case 'Breturn':
+                        $key.addClass('Breturn');
+                        return true;
+                        break;	
+                    case 'backspace':
+                        $key.addClass('backspace');
+                        return true;
+                        break;		
+                   case 'sTAB':
+                        $key.addClass('sTAB');
+                        return true;
+                        break;								
+                    default:
+                        return false;
+                        break;
+                }
+            }
+			var isSpacer = function (input, $key) {
+                switch (input) {
+                    case 'spacer':
+                        $key.addClass('spacer');
+                        return true;
+                        break;
+                    case 'spacer2':
+                        $key.addClass('spacer2');
+                        return true;
+                        break;  	
                     default:
                         return false;
                         break;
@@ -673,18 +700,20 @@ var hotbuildsettings = (function () {
             for(var prop in layoutDefault){
                 for (var i = 0; i < layoutDefault[prop].length; i++) {
                     var $key = $("<span/>");
-                    if (!isSpecial(layoutDefault[prop][i], $key)){
-                        if (isLetter(layoutDefault[prop][i])) {
-                            $key.addClass('letter');
-                        }else {
-                            $key.addClass('symbol');
-                        }
-                    }
-                    $key.html(layoutDefault[prop][i]);
+					if (!isSpacer(layoutDefault[prop][i], $key)){
+						if (!isSpecial(layoutDefault[prop][i], $key)){
+							if (isLetter(layoutDefault[prop][i])) {
+								$key.addClass('letter');
+							}else {
+								$key.addClass('symbol');
+							}
+						}
+						$key.html(layoutDefault[prop][i]);
+					}
                     //debugger;
-                    if (i === layoutDefault[prop].length - 1) {
+					if (i === 0) {
                         console.log("lalala" + layoutDefault[prop][i])
-                        $key.addClass('lastitem');
+                        $key.addClass('leftclear');
                     }
                     $keyboard.append($key);
                 }
