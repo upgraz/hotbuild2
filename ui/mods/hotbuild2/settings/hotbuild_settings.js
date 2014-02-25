@@ -197,14 +197,7 @@ var hotbuildsettings = (function () {
         };
 
         self.klayouts = ko.observableArray([]);
-        self.klayout = ko.observable({
-            //'row0': ['esc', 'F1', 'F2', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
-            //'row1': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
-            'row2': ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
-            'row3': ['capslock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'return'],
-            'row4': ['left-shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'right-shift'],
-            'row5': ['space']
-        });
+        self.klayout = ko.observable();
 
         self.ChangeLayout = function () {
             for (var i = 0; i < self.klayouts.length; i++) {
@@ -557,12 +550,12 @@ var hotbuildsettings = (function () {
         return newSettings;
     });
 
-    model.addSetting_DropDown('Choose Community Defaults', 'hotbuild_cdefaults', 'UI', ["DEFAULT"], 0, 'Hotbuild2');
+    var olddefaults = decode(localStorage.settings).hotbuild_cdefaults != null ? [decode(localStorage.settings).hotbuild_cdefaults] : ['DEFAULT'];
+    model.addSetting_DropDown('Choose Community Defaults', 'hotbuild_cdefaults', 'UI', olddefaults, 0, 'Hotbuild2');
     model.addSetting_Button('', 'Apply Defaults', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultPrompt', 'Hotbuild2');
-    //model.addSetting_Button('Set Community Defaults', '(&#8592;&#8593;&#8594;&#8595;)', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultPrompt', 'Hotbuild2');
-    //model.addSetting_Button('Set Community Defaults', 'WASD', 'UI', 'hotbuildsettings.viewmodel.showCommunityDefaultWASDPrompt', 'Hotbuild2');
     model.addSetting_Button('Import/Export', 'Import/Export', 'UI', 'hotbuildsettings.viewmodel.showImportExportDialog', 'Hotbuild2');
-    model.addSetting_DropDown('Choose Keyboard Layout', 'hotbuild_klayout', 'UI', ["DEFAULT"], 0, 'Hotbuild2');
+    var oldlayout = decode(localStorage.settings).hotbuild_klayout != null ? [decode(localStorage.settings).hotbuild_klayout] : ['DEFAULT'];
+    model.addSetting_DropDown('Choose Keyboard Layout', 'hotbuild_klayout', 'UI', oldlayout, 0, 'Hotbuild2');
     model.addSetting_Button('', 'Change Layout', 'UI', 'hotbuildsettings.viewmodel.ChangeLayout', 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Show Key on BuildBar', 'hotbuild_show_key_on_buildbar', 'UI', ['ON', 'OFF'], 0, 'Hotbuild2');
     model.addSetting_DropDown('Hotbuild Show Key on SideBar', 'hotbuild_show_key_on_sidebar', 'UI', ['ON', 'OFF'], 0, 'Hotbuild2');
