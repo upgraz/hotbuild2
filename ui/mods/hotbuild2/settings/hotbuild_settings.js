@@ -388,6 +388,7 @@ var hotbuildsettings = (function () {
             });
         };
 
+
         self.export = function () {
             console.log('export');
             var keyboardsettings = {};
@@ -810,8 +811,8 @@ var hotbuildsettings = (function () {
                         $('#kbselection').replaceWith($selectedButton);
                         $('#kbselection').click(function () {
                             $('#changeKeyDlg').dialog({
-                                height: 150,
-                                width: 150,
+                                height: 200,
+                                width: 250,
                                 modal: true,
                                 buttons: {
                                     "Change Key": function () { hotbuildsettings.viewmodel.swapKey(); $(this).dialog("close"); }
